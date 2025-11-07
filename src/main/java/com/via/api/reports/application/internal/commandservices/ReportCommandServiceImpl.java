@@ -17,7 +17,7 @@ public class ReportCommandServiceImpl implements ReportCommandService {
 
     @Override
     public Long handle(CreateReportCommand command) {
-        var report = new Report(command.reportName(), command.description(), command.tagName(), command.confidence());
+        var report = new Report(command.routeName(), command.reportName(), command.description(), command.tagName(), command.confidence());
         reportRepository.save(report);
         return report.getId();
     }

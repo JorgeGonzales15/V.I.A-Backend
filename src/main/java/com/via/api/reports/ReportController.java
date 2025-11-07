@@ -9,6 +9,8 @@ import com.via.api.reports.interfaces.rest.resources.ReportResource;
 import com.via.api.reports.interfaces.rest.transform.CreateReportCommandFromResourceAssembler;
 import com.via.api.reports.interfaces.rest.transform.ReportResourceFromEntityAssembler;
 import io.swagger.annotations.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/v1/reports", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReportController {
 
+
     private final ReportCommandService reportCommandService;
     private final ReportQueryService reportQueryService;
 
@@ -37,6 +40,7 @@ public class ReportController {
      */
     @PostMapping
     public ResponseEntity<ReportResource> createReport(@RequestBody CreateReportResource resource) {
+
         var createReportCommand = CreateReportCommandFromResourceAssembler.toCommandFromResource(resource);
         var reportId = reportCommandService.handle(createReportCommand);
 

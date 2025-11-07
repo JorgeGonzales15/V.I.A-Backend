@@ -7,6 +7,7 @@ public class ReportResourceFromEntityAssembler {
     public static ReportResource toResourceFromEntity(Report entity) {
         return new ReportResource(
                 entity.getId(),
+                entity.getRouteName(),
                 entity.getReportName(),
                 entity.getDescription(),
                 entity.getTagName(),
