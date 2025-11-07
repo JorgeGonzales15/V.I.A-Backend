@@ -1,4 +1,6 @@
 package com.via.api.reports.domain.model.commands;
 
-public record CreateReportCommand(String routeName, String reportName, String description, String tagName, Double confidence) {
+import java.util.List;
+
+public record CreateReportCommand(List<CreateDetectedObjectCommand> detectedObjects) {
 }

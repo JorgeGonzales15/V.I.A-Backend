@@ -17,7 +17,22 @@ public class ReportCommandServiceImpl implements ReportCommandService {
 
     @Override
     public Long handle(CreateReportCommand command) {
-        var report = new Report(command.routeName(), command.reportName(), command.description(), command.tagName(), command.confidence());
+        // 1. Obtenemos el conteo actual para los nombres
+        long currentCount = reportRepository.count();
+        long nextId = currentCount + 1;
+        String routeName = "Ruta " + nextId;
+        String reportName = "Reporte " + nextId;
+
+        // 2. Creamos el Reporte "padre"
+        var report = new Report(routeName, reportName);
+
+        // 3. Iteramos sobre los objetos del comando y los añadimos al padre
+        command.detectedObjects().forEach(objCommand -> {
+            report.addDetectedObject(objCommand.tagName(), objCommand.confidence());
+        });
+
+        // 4. Guardamos el reporte padre.
+        // Gracias a "CascadeType.ALL", los hijos (DetectedObject) se guardarán automáticamente.
         reportRepository.save(report);
         return report.getId();
     }

@@ -1,7 +1,11 @@
 package com.via.api.reports.domain.model.aggregates;
+import com.via.api.reports.domain.model.Entity.DetectedObject;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.CrossOrigin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Entity
@@ -10,35 +14,32 @@ public class Report {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Spring sabe que esto es 'id'
+    private Long id;
 
     @Getter
-    // SIN @Column. Spring lo mapeará a 'report_name'
     private String routeName;
 
     @Getter
-    // SIN @Column. Spring lo mapeará a 'report_name'
     private String reportName;
 
+    // ----- RELACIÓN UNO-A-MUCHOS -----
     @Getter
-    private String description;
-
-    @Getter
-    // SIN @Column. Spring lo mapeará a 'tag_name'
-    private String tagName;
-
-    @Getter
-    private Double confidence;
+    @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<DetectedObject> detectedObjects = new ArrayList<>();
 
     public Report() {
     }
 
-    // El constructor usa los nombres de Java (camelCase)
-    public Report(String routeName, String reportName, String description, String tagName, Double confidence) {
+    // El constructor solo necesita los nombres, la lista se llena después
+    public Report(String routeName, String reportName) {
         this.routeName = routeName;
         this.reportName = reportName;
-        this.description = description;
-        this.tagName = tagName;
-        this.confidence = confidence;
+    }
+
+    // ----- MÉTODO AYUDANTE -----
+    // Para añadir objetos y mantener la relación sincronizada
+    public void addDetectedObject(String tagName, Double confidence) {
+        DetectedObject object = new DetectedObject(tagName, confidence, this);
+        this.detectedObjects.add(object);
     }
 }
