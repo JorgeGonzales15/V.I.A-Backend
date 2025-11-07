@@ -2,11 +2,15 @@ package com.via.api.reports.domain.model.aggregates;
 import com.via.api.reports.domain.model.Entity.DetectedObject;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@EntityListeners(AuditingEntityListener.class)
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Entity
 @Table(name = "reports")
@@ -15,6 +19,11 @@ public class Report {
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Getter
+    @CreatedDate // 5. Anotación mágica: se llena en la creación
+    @Column(name = "created_at", nullable = false, updatable = false) // 6. Mapeo a BD
+    private LocalDateTime createdAt;
 
     @Getter
     private String routeName;

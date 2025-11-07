@@ -17,7 +17,8 @@ public class ReportResourceFromEntityAssembler {
                 entity.getId(),
                 entity.getRouteName(),
                 entity.getReportName(),
-                detectedObjectResources
+                detectedObjectResources,
+                entity.getCreatedAt()
         );
     }
 }
