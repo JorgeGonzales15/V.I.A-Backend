@@ -17,4 +17,5 @@ public class OpenApiConfiguration implements WebMvcConfigurer {
                 .allowedHeaders("*");
     }
 
+
 }
