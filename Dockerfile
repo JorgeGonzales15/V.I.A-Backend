@@ -10,6 +10,7 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
+RUN chmod +x ./mvnw
 # Descarga dependencias (si el pom.xml no ha cambiado, Docker reusa esta capa)
 RUN ./mvnw dependency:go-offline
 
@@ -32,3 +33,4 @@ EXPOSE 8080
 
 # Comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+
